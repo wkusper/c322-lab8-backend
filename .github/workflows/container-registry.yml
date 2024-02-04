@@ -16,10 +16,10 @@ jobs:
           java-version: '17'
           distribution: 'adopt'
 
-      - name: Build
+      - name: Build the package
         run: mvn --batch-mode -DskipTests package
 
-      - name: Test
+      - name: Run the unit tests
         run: mvn --batch-mode -Dmaven.test.failure.ignore=true test
 
       - name: Report
