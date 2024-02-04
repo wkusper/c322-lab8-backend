@@ -17,6 +17,16 @@ import java.util.List;
 
 @Component
 public class DucksRepository {
+    public DucksRepository() {
+        File ducksImagesDirectory = new File("ducks/images");
+        if(!ducksImagesDirectory.exists()) {
+            ducksImagesDirectory.mkdirs();
+        }
+        File ducksAudioDirectory = new File("ducks/audio");
+        if(!ducksAudioDirectory.exists()) {
+            ducksAudioDirectory.mkdirs();
+        }
+    }
 
     private String IMAGES_FOLDER_PATH = "ducks/images/";
     private static final String NEW_LINE = System.lineSeparator();
