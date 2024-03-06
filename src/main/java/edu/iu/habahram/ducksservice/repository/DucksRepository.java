@@ -39,11 +39,19 @@ public class DucksRepository {
                 StandardOpenOption.CREATE,
                 StandardOpenOption.APPEND);
     }
-    public boolean add(DuckData duckData) throws IOException {
+    public int add(DuckData duckData) throws IOException {
+        List<DuckData> ducks = findAll();
+        int maxId = 0;
+        for (int i = 0; i < ducks.size(); i++) {
+            if (ducks.get(i).id() > maxId) {
+                maxId = ducks.get(i).id();
+            }
+        }
+        int id = maxId + 1;
         Path path = Paths.get(DATABASE_NAME);
-        String data = duckData.toLine();
+        String data = duckData.toLine(id);
         appendToFile(path, data + NEW_LINE);
-        return true;
+        return id;
     }
 
     public boolean updateImage(int id, MultipartFile file) throws IOException {
@@ -97,6 +105,7 @@ public class DucksRepository {
                 result.add(d);
             }
         }
+
         return result;
     }
 

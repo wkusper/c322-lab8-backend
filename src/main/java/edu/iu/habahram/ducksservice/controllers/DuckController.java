@@ -25,7 +25,7 @@ public class DuckController {
 
 
    @PostMapping
-    public boolean add(@RequestBody DuckData duck) {
+    public int add(@RequestBody DuckData duck) {
        try {
            return ducksRepository.add(duck);
        } catch (IOException e) {
