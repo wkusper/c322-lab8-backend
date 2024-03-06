@@ -29,6 +29,7 @@ public class DucksRepository {
     }
 
     private String IMAGES_FOLDER_PATH = "ducks/images/";
+    private String AUDIO_FOLDER_PATH = "ducks/audio/";
     private static final String NEW_LINE = System.lineSeparator();
     private static final String DATABASE_NAME = "ducks/db.txt";
     private static void appendToFile(Path path, String content)
@@ -57,6 +58,19 @@ public class DucksRepository {
         return true;
     }
 
+    public boolean updateAudio(int id, MultipartFile file) throws IOException {
+        System.out.println(file.getOriginalFilename());
+        System.out.println(file.getContentType());
+
+        String fileExtension = ".mp3";
+        Path path = Paths.get(AUDIO_FOLDER_PATH
+                + id + fileExtension);
+        System.out.println("The file " + path + " was saved successfully.");
+        file.transferTo(path);
+        return true;
+    }
+
+
     public byte[] getImage(int id) throws IOException {
         String fileExtension = ".png";
         Path path = Paths.get(IMAGES_FOLDER_PATH
@@ -65,13 +79,23 @@ public class DucksRepository {
         return image;
     }
 
+    public byte[] getAudio(int id) throws IOException {
+        String fileExtension = ".mp3";
+        Path path = Paths.get(AUDIO_FOLDER_PATH
+                + id + fileExtension);
+        byte[] file = Files.readAllBytes(path);
+        return file;
+    }
+
     public List<DuckData> findAll() throws IOException {
         List<DuckData> result = new ArrayList<>();
         Path path = Paths.get(DATABASE_NAME);
         List<String> data = Files.readAllLines(path);
         for (String line : data) {
-            DuckData d = DuckData.fromLine(line);
-            result.add(d);
+            if(!line.trim().isEmpty()) {
+                DuckData d = DuckData.fromLine(line);
+                result.add(d);
+            }
         }
         return result;
     }

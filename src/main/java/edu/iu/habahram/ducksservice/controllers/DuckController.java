@@ -70,12 +70,34 @@ public class DuckController {
         }
     }
 
+    @PostMapping("/{id}/audio")
+    public boolean updateAudio(@PathVariable int id,
+                               @RequestParam MultipartFile file) {
+        try {
+            return ducksRepository.updateAudio(id, file);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     @GetMapping("/{id}/image")
     public ResponseEntity<?> getImage(@PathVariable int id) {
         try {
             byte[] image = ducksRepository.getImage(id);
             return ResponseEntity.status(HttpStatus.FOUND)
                     .contentType(MediaType.IMAGE_PNG)
+                    .body(image);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @GetMapping("/{id}/audio")
+    public ResponseEntity<?> getAudio(@PathVariable int id) {
+        try {
+            byte[] image = ducksRepository.getAudio(id);
+            return ResponseEntity.status(HttpStatus.FOUND)
+                    .contentType(MediaType.valueOf("audio/mp3"))
                     .body(image);
         } catch (IOException e) {
             throw new RuntimeException(e);
