@@ -92,8 +92,10 @@ public class DucksRepository {
         Path path = Paths.get(DATABASE_NAME);
         List<String> data = Files.readAllLines(path);
         for (String line : data) {
-            DuckData d = DuckData.fromLine(line);
-            result.add(d);
+            if(!line.trim().isEmpty()) {
+                DuckData d = DuckData.fromLine(line);
+                result.add(d);
+            }
         }
         return result;
     }
